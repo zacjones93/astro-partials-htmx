@@ -25,33 +25,3 @@ import Layout from '../layouts/Layout.astro';
 		line-height: 1.6;
 	}
 </style>
-
-// Name: switch-case
-/// Shortcut: shift control C
-// Keyword: sw
-// Description: Change case of text in a sentance. 
-// Cache: true
-
-
-import "@johnlindquist/kit"
-
-let { titleCase, sentenceCase, paramCase, camelCase } = await npm("text-case");
-
-let options = {
-  "[T]itle Case": titleCase,
-  "[S]entence case": sentenceCase,
-  "[p]aram-case": paramCase,
-  "[c]amelCase": camelCase,
-};
-
-
-let option = await arg(
-  "What case do you want to convert to?",
-  Object.keys(options)
-);
-
-let text = await getSelectedText();
-
-let formattedText = options[option](text);
-
-await setSelectedText(formattedText);
