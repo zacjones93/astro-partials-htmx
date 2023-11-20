@@ -1,0 +1,24 @@
+---
+export const partial = true
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+
+let productCategories = await prisma.product.findMany({
+  select: {
+    category: true,
+  }
+})
+
+const uniqueCategories = [...new Set(productCategories.map(({category}) => category))]
+---
+
+{
+  uniqueCategories.map((category) => { 
+    return (
+      <option value={category}>{category}</option>
+    )
+  })
+}
+

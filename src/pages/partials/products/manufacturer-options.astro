@@ -1,0 +1,24 @@
+---
+export const partial = true
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+
+let productManufacturers = await prisma.product.findMany({
+  select: {
+    manufacturer: true,
+  }
+})
+
+const uniqueManufacturer = [...new Set(productManufacturers.map(({manufacturer}) => manufacturer))]
+---
+
+{
+  uniqueManufacturer.map((manufacturer) => { 
+    return (
+      <option value={manufacturer} >{manufacturer}</option>
+    )
+  })
+}
+

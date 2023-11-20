@@ -1,0 +1,131 @@
+---
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-gray-900">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+  
+	<body>
+    <header class="h-12"><h1 class="max-w-screen-2xl mx-auto h-full font-mono font-bold text-white p-4" >hardware.io</h1></header>
+    <div class="grid md:grid-cols-6 grid-cols-1 max-w-screen-2xl mx-auto">
+      <aside class="col-span-1 p-4 space-y-4">
+        <h2 class="text-white font-bold text-lg">Filters</h2>
+        <div>
+          <label for="category-filter" class="mb-1 block text-md font-medium text-gray-300">
+            By category 
+          </label>
+          <div
+            hx-get="/partials/products/category-options"
+            hx-trigger="load"
+            hx-swap="beforeend"
+            hx-target="#category-filter"
+          />
+          <select 
+            class="bg-gray-800  p-2 rounded text-sm text-gray-300 w-full" 
+            id="category-filter"
+            name="category"
+            hx-get="/partials/products/list-cards"
+            hx-target="#product-list"
+            hx-include="#manufacturer-filter"
+          >
+            <option value="">All</option>
+          </select>
+        </div>
+        <div>
+          <label for="manufacturer-filter" class="mb-1 block text-md font-medium text-gray-300">
+            By Manufacturer 
+          </label>
+          <div
+            hx-get="/partials/products/manufacturer-options"
+            hx-trigger="load"
+            hx-swap="beforeend"
+            hx-target="#manufacturer-filter"
+          />
+          <select 
+            class="bg-gray-800  p-2 rounded text-sm text-gray-300 w-full" 
+            id="manufacturer-filter"
+            name="manufacturer"
+            hx-get="/partials/products/list-cards"
+            hx-target="#product-list"
+            hx-include="#category-filter, #manufacturer-filter, #greater-price-filter"
+          >
+            <option value="">All</option>
+          </select>
+        </div>
+        <div >
+          <h3 class="mb-1 block text-md font-medium text-gray-300">
+            Price
+          </h3>
+          <label for="less-price-filter" class="mb-1 block text-sm font-medium text-gray-300">less than</label>
+          <input 
+            id="less-price-filter"
+            type="number"
+            class="bg-white text-sm text-gray-900 rounded outline-none p-2 w-full"
+            name="less-price"
+            hx-target="#product-list"
+            hx-get="/partials/products/list-cards"
+            hx-trigger="keyup changed delay:1s"
+            hx-include="#category-filter, #manufacturer-filter, #greater-price-filter"
+          />
+          <label for="greater-price-filter" class="mt-4 mb-1 block text-sm font-medium text-gray-300">greater than</label>
+          <input 
+            id="greater-price-filter"
+            type="number"
+            class="bg-white text-sm text-gray-900 rounded outline-none p-2 w-full "
+            name="greater-price"
+            hx-target="#product-list"
+            hx-get="/partials/products/list-cards"
+            hx-trigger="keyup changed delay:1s"
+            hx-include="#category-filter, #manufacturer-filter, #less-price-filter"
+          />
+        </div>
+      </aside>
+      <div class="md:col-span-5">
+        <slot />
+      </div>
+    </div>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 136, 58, 234;
+		--accent-light: 224, 204, 250;
+		--accent-dark: 49, 10, 101;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			rgb(var(--accent-light)) 30%,
+			white 60%
+		);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-size: 224px;
+	}
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
+</style>

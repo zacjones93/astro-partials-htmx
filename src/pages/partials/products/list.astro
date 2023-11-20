@@ -1,0 +1,22 @@
+---
+export const partial = true
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+const listType = new URL(Astro.request.url).searchParams.get("type");
+
+
+let products = await prisma.product.findMany()
+
+---
+
+{products.map((product) => 
+    (
+      <li>
+        {product.name}
+      </li>
+    )
+)}
+
+

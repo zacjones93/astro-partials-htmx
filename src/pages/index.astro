@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+---
+
+<Layout title="Astro x htmx">
+	<main>
+    <ul
+      class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2"
+      hx-get={`/partials/products/list-cards`}
+      hx-trigger="load"
+      id="product-list"
+    >
+  </ul>
+  </main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 1rem;
+		max-width: calc(100% - 2rem);
+		color: white;
+		font-size: 20px;
+		line-height: 1.6;
+	}
+</style>
+
+// Name: switch-case
+/// Shortcut: shift control C
+// Keyword: sw
+// Description: Change case of text in a sentance. 
+// Cache: true
+
+
+import "@johnlindquist/kit"
+
+let { titleCase, sentenceCase, paramCase, camelCase } = await npm("text-case");
+
+let options = {
+  "[T]itle Case": titleCase,
+  "[S]entence case": sentenceCase,
+  "[p]aram-case": paramCase,
+  "[c]amelCase": camelCase,
+};
+
+
+let option = await arg(
+  "What case do you want to convert to?",
+  Object.keys(options)
+);
+
+let text = await getSelectedText();
+
+let formattedText = options[option](text);
+
+await setSelectedText(formattedText);
